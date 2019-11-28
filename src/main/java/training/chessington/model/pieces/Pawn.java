@@ -15,6 +15,13 @@ public class Pawn extends AbstractPiece {
 
     @Override
     public List<Move> getAllowedMoves(Coordinates from, Board board) {
+        ArrayList<Move> moves  = new ArrayList<>();
+        moves.addAll(getStandardMoves(from, board));
+        moves.addAll(getCapturingMoves(from, board));
+        return moves;
+    }
+
+    private ArrayList<Move> getStandardMoves(Coordinates from, Board board) {
         ArrayList<Move> moves = new ArrayList<>();
         ArrayList<Coordinates> potentialCoords = new ArrayList<>();
 
@@ -33,12 +40,36 @@ public class Pawn extends AbstractPiece {
         }
 
         potentialCoords.forEach(coordinates -> {
-            if (coordinates.getRow() >= 0
-                    && coordinates.getRow() <= 7
+            if (coordinates.isOnBoard()
                     && board.get(coordinates) == null) {
                 moves.add(new Move(from, coordinates));
             }
         });
+        return moves;
+    }
+
+    private ArrayList<Move> getCapturingMoves(Coordinates from, Board board) {
+        ArrayList<Move> moves = new ArrayList<>();
+        ArrayList<Coordinates> potentialCoords = new ArrayList<>();
+
+        if (this.getColour() == PlayerColour.WHITE) {
+            potentialCoords.add(from.plus(-1, 1));
+            potentialCoords.add(from.plus(-1, -1));
+        }
+        if (this.getColour() == PlayerColour.BLACK) {
+            potentialCoords.add(from.plus(1, 1));
+            potentialCoords.add(from.plus(1, -1));
+        }
+
+        potentialCoords.forEach(coordinates -> {
+            if (coordinates.isOnBoard()) {
+                Piece piece = board.get(coordinates);
+                if (piece != null && piece.getColour() != this.getColour()) {
+                    moves.add(new Move(from, coordinates));
+                }
+            }
+        });
+
         return moves;
     }
 }

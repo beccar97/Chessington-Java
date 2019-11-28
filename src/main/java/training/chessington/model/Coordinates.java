@@ -41,4 +41,8 @@ public final class Coordinates {
     public Coordinates plus(int rowDiff, int colDiff) {
         return new Coordinates(row + rowDiff, col + colDiff);
     }
+
+    public Boolean isOnBoard() {
+        return (row >= 0 && row <= 7 && col >= 0 && col <=7);
+    }
 }
