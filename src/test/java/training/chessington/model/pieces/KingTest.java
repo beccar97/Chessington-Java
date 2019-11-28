@@ -32,6 +32,7 @@ public class KingTest {
         }
     }
 
+    @Test
     public void blackKingCanMoveOneInAnyDir() {
         // Arrange
         Board board = Board.empty();
@@ -48,5 +49,35 @@ public class KingTest {
                 if (!(colDiff == 0 && rowDiff == 0)) assertThat(moves).contains(new Move(coords, coords.plus(rowDiff, colDiff)));
             }
         }
+    }
+
+    @Test
+    public void kingCannotMoveIntoSpaceContainingPieceOfSameColour() {
+        // Arrange
+        Board board = Board.empty();
+
+        Piece whiteKing = new King(PlayerColour.WHITE);
+        Coordinates whiteCoords = new Coordinates(5, 4);
+        board.placePiece(whiteCoords, whiteKing);
+
+        Piece whitePawn = new Pawn(PlayerColour.WHITE);
+        Coordinates whitePawnCoords = new Coordinates(5, 5);
+        board.placePiece(whitePawnCoords, whitePawn);
+
+        Piece blackKing = new King(PlayerColour.BLACK);
+        Coordinates blackCoords = new Coordinates(2, 4);
+        board.placePiece(whiteCoords, blackKing);
+
+        Piece blackPawn = new Pawn(PlayerColour.BLACK);
+        Coordinates blackPawnCoords = new Coordinates(2, 5);
+        board.placePiece(blackPawnCoords, blackPawn);
+
+        // Act
+        List<Move> whiteMoves = whiteKing.getAllowedMoves(whiteCoords, board);
+        List<Move> blackMoves = blackKing.getAllowedMoves(blackCoords, board);
+
+        // Assert
+        assertThat(whiteMoves).doesNotContain(new Move(whiteCoords, whitePawnCoords));
+        assertThat(blackMoves).doesNotContain(new Move(blackCoords, blackPawnCoords));
     }
 }

@@ -38,7 +38,7 @@ public class King extends AbstractPiece {
 
         for (int rowDiff = -1; rowDiff <= 1; rowDiff++){
             for (int colDiff = -1; colDiff <= 1; colDiff++) {
-                coords.add(from.plus(rowDiff, colDiff));
+                if (!(colDiff == 0 && rowDiff == 0)) coords.add(from.plus(rowDiff, colDiff));
             }
         }
 
