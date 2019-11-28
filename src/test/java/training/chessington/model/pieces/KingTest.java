@@ -80,4 +80,35 @@ public class KingTest {
         assertThat(whiteMoves).doesNotContain(new Move(whiteCoords, whitePawnCoords));
         assertThat(blackMoves).doesNotContain(new Move(blackCoords, blackPawnCoords));
     }
+
+    @Test
+    public void kingCanTakePiecesOfOppositeColor() {
+        // Arrange
+        Board board = Board.empty();
+
+        Piece whiteKing = new King(PlayerColour.WHITE);
+        Coordinates whiteCoords = new Coordinates(5, 4);
+        board.placePiece(whiteCoords, whiteKing);
+
+        Piece blackPawn = new Pawn(PlayerColour.BLACK);
+        Coordinates blackPawnCoords = new Coordinates(5, 5);
+        board.placePiece(blackPawnCoords, blackPawn);
+
+        Piece blackKing = new King(PlayerColour.BLACK);
+        Coordinates blackCoords = new Coordinates(2, 4);
+        board.placePiece(whiteCoords, blackKing);
+
+        Piece whitePawn = new Pawn(PlayerColour.WHITE);
+        Coordinates whitePawnCoords = new Coordinates(2, 5);
+        board.placePiece(whitePawnCoords, whitePawn);
+
+
+        // Act
+        List<Move> whiteMoves = whiteKing.getAllowedMoves(whiteCoords, board);
+        List<Move> blackMoves = blackKing.getAllowedMoves(blackCoords, board);
+
+        // Assert
+        assertThat(whiteMoves).contains(new Move(whiteCoords, blackPawnCoords));
+        assertThat(blackMoves).contains(new Move(blackCoords, whitePawnCoords));
+    }
 }
