@@ -33,7 +33,11 @@ public class Pawn extends AbstractPiece {
         }
 
         potentialCoords.forEach(coordinates -> {
-            if (board.get(coordinates) == null) moves.add(new Move(from, coordinates));
+            if (coordinates.getRow() >= 0
+                    && coordinates.getRow() <= 7
+                    && board.get(coordinates) == null) {
+                moves.add(new Move(from, coordinates));
+            }
         });
         return moves;
     }
