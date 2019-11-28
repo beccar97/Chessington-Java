@@ -84,5 +84,113 @@ public class RookTest {
         }
     }
 
+    @Test
+    public void whiteRookCannotMovePastPieceOfSameColour() {
+        // Arrange
+        Board board = Board.empty();
+
+        Piece rook = new Rook(PlayerColour.WHITE);
+        Coordinates coordinates = new Coordinates(7, 0);
+        board.placePiece(coordinates, rook);
+
+        Piece pawn = new Pawn(PlayerColour.WHITE);
+        Coordinates pawnCoordinates = new Coordinates(7, 3);
+        board.placePiece(pawnCoordinates, pawn);
+
+        Piece secondPawn = new Pawn(PlayerColour.WHITE);
+        Coordinates secondPawnCoordinates = new Coordinates(5, 0);
+        board.placePiece(secondPawnCoordinates, secondPawn);
+
+        // Act
+        List<Move> moves = rook.getAllowedMoves(coordinates, board);
+
+        // Assert
+        assertThat(moves).doesNotContain(new Move(coordinates, pawnCoordinates));
+        assertThat(moves).doesNotContain(new Move(coordinates, pawnCoordinates.plus(0, 1)));
+        assertThat(moves).doesNotContain(new Move(coordinates, secondPawnCoordinates));
+        assertThat(moves).doesNotContain(new Move(coordinates, secondPawnCoordinates.plus(-1, 0)));
+    }
+
+    @Test
+    public void blackRookCannotMovePastPieceOfSameColour() {
+        // Arrange
+        Board board = Board.empty();
+
+        Piece rook = new Rook(PlayerColour.BLACK);
+        Coordinates coordinates = new Coordinates(0, 0);
+        board.placePiece(coordinates, rook);
+
+        Piece pawn = new Pawn(PlayerColour.BLACK);
+        Coordinates pawnCoordinates = new Coordinates(0, 3);
+        board.placePiece(pawnCoordinates, pawn);
+
+        Piece secondPawn = new Pawn(PlayerColour.BLACK);
+        Coordinates secondPawnCoordinates = new Coordinates(5, 0);
+        board.placePiece(secondPawnCoordinates, secondPawn);
+
+        // Act
+        List<Move> moves = rook.getAllowedMoves(coordinates, board);
+
+        // Assert
+        assertThat(moves).doesNotContain(new Move(coordinates, pawnCoordinates));
+        assertThat(moves).doesNotContain(new Move(coordinates, pawnCoordinates.plus(0, 1)));
+        assertThat(moves).doesNotContain(new Move(coordinates, secondPawnCoordinates));
+        assertThat(moves).doesNotContain(new Move(coordinates, secondPawnCoordinates.plus(1, 0)));
+    }
+
+    @Test
+    public void whiteRookCanTakeBlackPiece() {
+        // Arrange
+        Board board = Board.empty();
+
+        Piece rook = new Rook(PlayerColour.WHITE);
+        Coordinates coordinates = new Coordinates(7, 0);
+        board.placePiece(coordinates, rook);
+
+        Piece pawn = new Pawn(PlayerColour.BLACK);
+        Coordinates pawnCoordinates = new Coordinates(7, 3);
+        board.placePiece(pawnCoordinates, pawn);
+
+        Piece secondPawn = new Pawn(PlayerColour.BLACK);
+        Coordinates secondPawnCoordinates = new Coordinates(5, 0);
+        board.placePiece(secondPawnCoordinates, secondPawn);
+
+        // Act
+        List<Move> moves = rook.getAllowedMoves(coordinates, board);
+
+        // Assert
+        assertThat(moves).contains(new Move(coordinates, pawnCoordinates));
+        assertThat(moves).doesNotContain(new Move(coordinates, pawnCoordinates.plus(0, 1)));
+        assertThat(moves).contains(new Move(coordinates, secondPawnCoordinates));
+        assertThat(moves).doesNotContain(new Move(coordinates, secondPawnCoordinates.plus(-1, 0)));
+    }
+
+    @Test
+    public void blackRookCanTakeWhitePiece() {
+        // Arrange
+        Board board = Board.empty();
+
+        Piece rook = new Rook(PlayerColour.BLACK);
+        Coordinates coordinates = new Coordinates(0, 0);
+        board.placePiece(coordinates, rook);
+
+        Piece pawn = new Pawn(PlayerColour.WHITE);
+        Coordinates pawnCoordinates = new Coordinates(0, 3);
+        board.placePiece(pawnCoordinates, pawn);
+
+        Piece secondPawn = new Pawn(PlayerColour.WHITE);
+        Coordinates secondPawnCoordinates = new Coordinates(5, 0);
+        board.placePiece(secondPawnCoordinates, secondPawn);
+
+        // Act
+        List<Move> moves = rook.getAllowedMoves(coordinates, board);
+
+        // Assert
+        assertThat(moves).contains(new Move(coordinates, pawnCoordinates));
+        assertThat(moves).doesNotContain(new Move(coordinates, pawnCoordinates.plus(0, 1)));
+        assertThat(moves).contains(new Move(coordinates, secondPawnCoordinates));
+        assertThat(moves).doesNotContain(new Move(coordinates, secondPawnCoordinates.plus(1, 0)));
+    }
+
 
 }
