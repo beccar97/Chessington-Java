@@ -5,6 +5,7 @@ import training.chessington.model.Coordinates;
 import training.chessington.model.Move;
 import training.chessington.model.PlayerColour;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,12 +20,13 @@ public class Pawn extends AbstractPiece {
     @Override
     public List<Move> getAllowedMoves(Coordinates from, Board board) {
         ArrayList<Move> moves  = new ArrayList<>();
-        moves.addAll(getStandardMoves(from, board));
-        moves.addAll(getCapturingMoves(from, board));
+        moves.addAll(getVerticalMoves(from, board));
+        moves.addAll(getDiagonalMoves(from, board));
         return moves;
     }
 
-    private ArrayList<Move> getStandardMoves(Coordinates from, Board board) {
+    @Override
+    ArrayList<Move> getVerticalMoves(Coordinates from, Board board) {
         ArrayList<Move> moves = new ArrayList<>();
         ArrayList<Coordinates> potentialCoords = new ArrayList<>();
 
@@ -43,7 +45,13 @@ public class Pawn extends AbstractPiece {
         return moves;
     }
 
-    private ArrayList<Move> getCapturingMoves(Coordinates from, Board board) {
+    @Override
+    ArrayList<Move> getHorizontalMoves(Coordinates from, Board board) {
+        return new ArrayList<>();
+    }
+
+    @Override
+    ArrayList<Move> getDiagonalMoves(Coordinates from, Board board) {
         ArrayList<Move> moves = new ArrayList<>();
         ArrayList<Coordinates> potentialCoords = new ArrayList<>();
 

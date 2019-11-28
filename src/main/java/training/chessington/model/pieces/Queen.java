@@ -15,6 +15,10 @@ public class Queen extends AbstractPiece {
 
     @Override
     public List<Move> getAllowedMoves(Coordinates from, Board board) {
-        return new ArrayList<>();
+        ArrayList<Move> moves = new ArrayList<>();
+        moves.addAll(getVerticalMoves(from, board));
+        moves.addAll(getHorizontalMoves(from, board));
+        moves.addAll(getDiagonalMoves(from, board));
+        return moves;
     }
 }

@@ -21,43 +21,9 @@ public class Rook extends AbstractPiece {
         return moves;
     }
 
-    private ArrayList<Move> getVerticalMoves(Coordinates from, Board board) {
-        ArrayList<Move> moves = new ArrayList<>();
-
-        for (int currRow = from.getRow() + 1; currRow <= 7; currRow++) {
-            if (checkMove(from, board, moves, currRow, from.getCol())) break;
-        }
-
-        for (int currRow = from.getRow() - 1; currRow >= 0; currRow--) {
-            if (checkMove(from, board, moves, currRow, from.getCol())) break;
-        }
-
-        return moves;
+    @Override
+    ArrayList<Move> getDiagonalMoves(Coordinates from, Board board) {
+        return new ArrayList<>();
     }
 
-    private ArrayList<Move> getHorizontalMoves(Coordinates from, Board board) {
-        ArrayList<Move> moves = new ArrayList<>();
-
-        for (int currCol = from.getCol() + 1; currCol <= 7; currCol++){
-            if (checkMove(from, board, moves, from.getRow(), currCol)) break;
-        }
-
-        for (int currCol = from.getCol() -1; currCol >=0; currCol--) {
-            if (checkMove(from, board, moves, from.getRow(), currCol)) break;
-        }
-
-        return moves;
-    }
-
-    private boolean checkMove(Coordinates from, Board board, ArrayList<Move> moves, int currRow, int currCol) {
-        Coordinates coords = new Coordinates(currRow, currCol);
-        Piece piece = board.get(coords);
-
-        if (piece == null) moves.add(new Move(from, coords));
-        else {
-            if (piece.getColour() != this.getColour()) moves.add(new Move(from, coords));
-            return true;
-        }
-        return false;
-    }
 }
